@@ -1,18 +1,11 @@
-from pydantic import BaseModel, text
+from pydantic import BaseModel
 from datetime import datetime
 
 class MessageCreate(BaseModel):
     
     receiver_id : int
-    message : text
-    
-class MessageResponse(BaseModel):
-    
-    id : int
-    sender_id : int
-    receiver_id : int
-    message : text
-    timestamp : datetime
-    
+    flat_id : int
+    message : str
+ 
     class config:
         from_attributes = True

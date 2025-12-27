@@ -8,7 +8,7 @@ from backend.utils.jwt import create_access_token
 from fastapi.security import OAuth2PasswordRequestForm
 
 
-router = APIRouter(prefix = "/auth", tags = ["Auth"])
+router = APIRouter(prefix = "/auth", tags = ["Authorization"])
 
 @router.post("/register")
 def register(user: UserCreate, db: Session = Depends(get_db)):

@@ -31,9 +31,9 @@ def create_flatpost(flat: Flat_PostCreate,
     db.commit()
     db.refresh(new_flat_post)
     return {
-    "message": "Flat Post added successfully",
-    "data": new_flat_post
-    }
+        "message": "Flat Post added successfully",
+        "data": new_flat_post
+        }
 
     
     

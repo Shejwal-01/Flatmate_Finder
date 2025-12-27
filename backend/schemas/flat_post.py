@@ -1,5 +1,4 @@
-from pydantic import BaseModel, EmailStr
-from datetime import datetime
+from pydantic import BaseModel
 from enum import Enum
 
 class GenderEnum(str, Enum):
