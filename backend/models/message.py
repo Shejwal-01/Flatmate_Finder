@@ -2,8 +2,8 @@ import enum
 from sqlalchemy import Column, Integer, String, Enum, TIMESTAMP, ForeignKey
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql import func
+from backend.database import base
 
-base = declarative_base()
 class message(base):
     __tablename__ = "messages"
     

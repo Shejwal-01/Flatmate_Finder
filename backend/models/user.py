@@ -2,8 +2,7 @@ import enum
 from sqlalchemy import Column, Integer, String, Enum, TIMESTAMP
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql import func
-
-base = declarative_base()
+from backend.database import base
 
 class GenderEnum(enum.Enum):
     male = "male"

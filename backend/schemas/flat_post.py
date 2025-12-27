@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, text
+from pydantic import BaseModel, EmailStr
 from datetime import datetime
 from enum import Enum
 
@@ -11,26 +11,14 @@ class GenderEnum(str, Enum):
 
 class Flat_PostCreate(BaseModel):
     
-    username : str
     location : str
     city : str
     flatmates_required : int
     rent : int
     preferred_gender : GenderEnum
-    description : text
-    created_at : datetime
-    
-class UserResponse(BaseModel):
-    
-    id : int
-    user_id : int
-    username : str
-    location : str
-    city : str
-    rent : int
-    flatmates_required : int
-    created_at : datetime
+    description : str
     
     class config:
         from_attributes = True
+  
         

@@ -22,7 +22,7 @@ class UserLogin(BaseModel):
     
     username : str
     password : str
-    email : EmailStr
+    # email : EmailStr
     created_at : datetime
     
     class config:
