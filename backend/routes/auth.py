@@ -18,7 +18,8 @@ def show_site(request: Request, success: int = 0):
     alert = None
     if success:
         alert = "Registration successful! Login" 
-    
+    else:
+        alert = "Already Registered! Login to proceed"
     return templates.TemplateResponse(
         "index.html",
         {"request": request, "alert": alert}
@@ -41,7 +42,11 @@ def register(
     existing_byemail = db.query(User).filter(User.email == email).first()
     existing_byusername = db.query(User).filter(User.username == username).first()
     if existing_byemail or existing_byusername:
-        raise HTTPException(status_code=400, detail="User already registered")
+        return RedirectResponse(
+        url="/auth/register?success=0",
+        status_code=303
+    )
+        
     
     new_user = User(
         
