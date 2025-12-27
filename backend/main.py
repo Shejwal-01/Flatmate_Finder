@@ -1,13 +1,18 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Depends
+from sqlalchemy.orm import Session
+from backend.database import get_db
 from backend.routes.auth import router as auth_router
+from backend.routes.auth import templates
 from backend.routes.flats import router as flat_router
 from backend.routes.messages import router as msg_router
 
-app = FastAPI()
+app = FastAPI(title= "FlatMate Finder API", version="1.0.0")
 app.include_router(auth_router)
 app.include_router(flat_router)
 app.include_router(msg_router)
 
 @app.get("/")
-def root():
-    return {"message": "API is running"}
+def show_site(request: Request, db: Session = Depends(get_db)):
+    return templates.TemplateResponse(
+         "index.html",{"request": request}
+    )

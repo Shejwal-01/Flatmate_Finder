@@ -1,38 +1,66 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Form, Request
 from sqlalchemy.orm import Session
 from backend.database import get_db
 from backend.models.user import User
-from backend.schemas.user import UserCreate, UserLogin
 from backend.utils.security import hash_password, verify_password
 from backend.utils.jwt import create_access_token
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import RedirectResponse
+
+templates = Jinja2Templates(directory="frontend/templates")
 
 
 router = APIRouter(prefix = "/auth", tags = ["Authorization"])
 
-@router.post("/register")
-def register(user: UserCreate, db: Session = Depends(get_db)):
+@router.get("/register")
+def show_site(request: Request, success: int = 0):
+    alert = None
+    if success:
+        alert = "Registration successful! Login" 
     
-    existing = db.query(User).filter(User.email == user.email).first()
-    if existing:
-        raise HTTPException(status_code=400, detail="Email already registered")
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request, "alert": alert}
+    )
+
+
+
+@router.post("/register")
+def register(
+    request: Request,
+    name: str = Form(...),
+    username : str = Form(...),
+    email: str = Form(...),
+    password: str =Form(...),
+    gender: str = Form(...),
+    city: str = Form(...),
+    db: Session = Depends(get_db)
+    ):
+    
+    existing_byemail = db.query(User).filter(User.email == email).first()
+    existing_byusername = db.query(User).filter(User.username == username).first()
+    if existing_byemail or existing_byusername:
+        raise HTTPException(status_code=400, detail="User already registered")
     
     new_user = User(
         
-        name = user.name,
-        username = user.username,
-        email = user.email,
-        password = hash_password(user.password),
-        gender = user.gender,
-        city = user.city,
-        created_at = user.created_at
-        
+        name = name,
+        username = username,
+        email = email,
+        password = hash_password(password),
+        gender = gender,
+        city = city
     )
     
     db.add(new_user)
     db.commit()
+    db.refresh(new_user)
     
-    return {"message": "User registered successfully"}
+    return RedirectResponse(
+        url="/auth/register?success=1",
+        status_code=303
+    )
 
 
 @router.post("/login")

@@ -18,13 +18,6 @@ class UserCreate(BaseModel):
     city : str
     created_at : datetime
     
-class UserLogin(BaseModel):
-    
-    username : str
-    password : str
-    # email : EmailStr
-    created_at : datetime
-    
     class config:
         from_attributes = True
         
