@@ -34,7 +34,7 @@ def show_site(request: Request, success: int | None = None):
 def register(
     request: Request,
     name: str = Form(...),
-    # username : str = Form(...),
+    username : str = Form(...),
     email: str = Form(...),
     password: str =Form(...),
     gender: str = Form(...),
@@ -43,7 +43,7 @@ def register(
     ):
     
     existing_byemail = db.query(User).filter(User.email == email).first()
-    existing_byusername = db.query(User).filter(User.username == get_current_user.username).first()
+    existing_byusername = db.query(User).filter(User.username == username).first()
     if existing_byemail or existing_byusername:
         return RedirectResponse(
         url="/auth/register?success=0",
@@ -53,19 +53,21 @@ def register(
     user = UserCreate(
         
         name = name,
-        username = get_current_user.username,
+        username = username,
         email = email,
         password = password,
         gender = gender,
         city = city
     ) 
     
+    hashed_password = hash_password(user.password)
+    
     new_user = User(
         
         name = user.name,
         username = user.username,
         email = user.email,
-        password = user.hash_password(password),
+        password = hashed_password,
         gender = user.gender.value,
         city = user.city
     )

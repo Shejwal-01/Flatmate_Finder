@@ -50,7 +50,7 @@
     {% endif %}
 
     <header class="title">
-      <h1>Welcome to FlatMate Finder!</h1>
+      <h1 style="pointer-events: none;">Welcome to FlatMate Finder!</h1>
     </header>
 
     <div class="container form-container">
@@ -65,12 +65,20 @@
           <label class="form-label">Username<span class="red">*</span></label>
           <input
             type="text"
+            id="username"
             name="username"
             class="form-control"
             placeholder="Enter username"
             required
           />
         </div>
+        <script>
+          const usernameInput = document.getElementById('username');
+ 
+          usernameInput.addEventListener('input', function() {
+          this.value = this.value.toLowerCase();
+          });
+        </script>
 
         <div class="mb-3">
           <label class="form-label">Password<span class="red">*</span></label>

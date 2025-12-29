@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Form, Request
 from fastapi.responses import RedirectResponse
-from sqlalchemy import Enum
 from sqlalchemy.orm import Session
 from backend.models.flat import Flat
 from backend.database import get_db
@@ -33,31 +32,28 @@ def show_dashboard(request: Request,
     )
     
 
-@router.get("/flatpost/create")
-def create_flatpost(request: Request,
-                    current_user: User = Depends(get_current_user)
-                    ):
-        
-    return templates.TemplateResponse(
-        "flatpost.html",
-        {"request": request, "user" : current_user}
-    )
-    
 @router.get("/flatpost/createpost")
-def flatpost_success(request: Request,
-                    success: int | None = None,
-                    current_user: User = Depends(get_current_user)
-                    ):
+def create_flatpost(
+    request: Request,
+    success: int | None = None,
+    current_user: User = Depends(get_current_user)
+):
     alert = None
-    
+
     if success == 1:
         alert = "Flat post created!"
+
     return templates.TemplateResponse(
         "flatpost.html",
-        {"request": request, "user" : current_user, "alert": alert}
+        {
+            "request": request,
+            "user": current_user,
+            "alert": alert
+        }
     )
+
     
-@router.post("/flatpost/create")
+@router.post("/flatpost/createpost")
 def create_flatpost(request: Request,
     current_user: User = Depends(get_current_user),
     location: str = Form(...),
@@ -112,6 +108,32 @@ def logout_user():
     return response
 
 
+@router.get("/flatpost/deletepost")
+def delete_flatpost(
+    request: Request,
+    success: int | None = None,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    posts = (
+    db.query(Flat)
+    .order_by(Flat.created_at.desc())
+    .all())
+    alert = None
+
+    if success == 1:
+        alert = "Flat post deleted!"
+
+    return templates.TemplateResponse(
+        "dashboard.html",
+        {
+            "request": request,
+            "user": current_user,
+            "posts": posts,
+            "alert": alert
+        }
+    )
+
 @router.post("/flatpost/deletepost/{id}")
 def delete_flatpost(
     id: int,
@@ -131,5 +153,5 @@ def delete_flatpost(
         db.commit()
     
     return RedirectResponse(
-    url="/dash",
+    url="/dash/flatpost/deletepost?success=1",
     status_code=303)
