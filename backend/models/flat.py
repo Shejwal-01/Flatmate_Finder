@@ -15,12 +15,14 @@ class Flat(base):
     __tablename__ = "flats"
     
     id = Column(Integer, primary_key = True, index = True )
-    location = Column(String(200), nullable = False)
-    city = Column(String(100), nullable = False)
-    rent = Column(Integer, nullable = False)
-    flatmates_required = Column(Integer, nullable = False)
-    preferred_gender = Column(Enum(GenderEnum), nullable = False)
+    location = Column(String(200), nullable = True)
+    city = Column(String(100), nullable = True)
+    rent = Column(Integer, nullable = True)
+    flatmates_required = Column(Integer, nullable = True)
+    preferred_gender = Column(Enum(GenderEnum), nullable = True)
     description = Column(String)
     created_at = Column(TIMESTAMP, server_default=func.now())
+    user_name = Column(String, nullable = True)
+    
     user_id = Column(Integer,
         ForeignKey("users.id", ondelete="CASCADE"))

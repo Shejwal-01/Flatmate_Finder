@@ -1,11 +1,6 @@
 from pydantic import BaseModel
-from enum import Enum
+from backend.models.flat import GenderEnum
 
-class GenderEnum(str, Enum):
-    male = "male"
-    female = "female"
-    other = "other"
-    any = "any"
 
 
 class Flat_PostCreate(BaseModel):
@@ -17,7 +12,7 @@ class Flat_PostCreate(BaseModel):
     preferred_gender : GenderEnum
     description : str
     
-    class config:
+    class Config:
         from_attributes = True
   
         

@@ -1,11 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
-from enum import Enum
-
-class GenderEnum(str, Enum):
-    male = "male"
-    female = "female"
-    other = "other"
+from backend.models.user import GenderEnum
 
 
 class UserCreate(BaseModel):

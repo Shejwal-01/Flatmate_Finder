@@ -5,14 +5,16 @@ from backend.routes.auth import router as auth_router
 from backend.routes.auth import templates
 from backend.routes.flats import router as flat_router
 from backend.routes.messages import router as msg_router
+from backend.routes.dashboard import router as dash_router
 
 app = FastAPI(title= "FlatMate Finder API", version="1.0.0")
 app.include_router(auth_router)
 app.include_router(flat_router)
 app.include_router(msg_router)
+app.include_router(dash_router)
 
 @app.get("/")
-def show_site(request: Request, db: Session = Depends(get_db)):
+def show_site(request: Request):
     return templates.TemplateResponse(
          "index.html",{"request": request}
     )

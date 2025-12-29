@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FlatMate Finder</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        margin: 0;
+        background-color: #bfdbe6;
+        border: 2px inset #bfdbe6;
+      }
+      .alert {
+        background-color: #c9b59c;
+      }
+
+      /* ===== GRID LAYOUT ===== */
+      .app-layout {
+        display: grid;
+        grid-template-rows: 57px 1fr;
+        grid-template-columns: 150px 1fr;
+        height: 100vh;
+      }
+
+      header {
+        grid-column: 1 / -1;
+        background-color: rgb(27, 35, 72);
+        
+      }
+
+      /* ===== NAVBAR ===== */
+      .navbar {
+        height: 56px;
+        position: relative;
+        border: 2px inset #bfdbe6;
+      }
+
+      .dropdown-menu {
+        position: absolute !important;
+        top: 100%;
+        right: 0;
+        margin-top: 8px;
+        transform-origin: top right;
+        animation: fadeIn 0.15s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ===== SIDEBAR ===== */
+      .sidebar {
+        background-color: #1b2348;
+        padding-top: 30px;
+        border: 2px inset #bfdbe6;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .sidebar .btn1:hover {
+        background-color: #bfdbe6;
+        color: #1b2348;
+      }
+
+      .sidebar .btn1:active {
+        transform: scale(0.97);
+      }
+
+      .sidebar .btn1 {
+        background-color: #1b2348;
+
+        border-radius: 4px;
+        color: #bfdbe6;
+        height: 40px;
+        width: 143px;
+        border: 1px;
+        margin: 10px 0;
+        display: block;
+      }
+
+      /* ===== MAIN CONTENT ===== */
+      .main-content {
+        padding: 20px;
+        border: 2px inset #bfdbe6;
+        overflow-y: auto;
+      }
+      .posts_info {
+        font-size: 25px;
+      }
+    </style>
+  </head>
+
+  <body>
+    {% if alert %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ alert }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+    <div class="app-layout">
+      <!-- 🔹 NAVBAR -->
+      <header>
+        <nav class="navbar navbar-dark">
+          <div class="container-fluid">
+            <h1 class="navbar-brand">FlatMate Finder</h1>
+
+            <ul class="navbar-nav flex-row ms-auto">
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                >
+                  <img
+                    src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png"
+                    class="rounded-circle"
+                    height="32"
+                  />
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="#">My profile</a></li>
+                  <li><a class="dropdown-item" href="/dash/logout">Logout</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+
+      <!-- 🔹 SIDEBAR -->
+      <aside class="sidebar">
+        <button class="btn1 btn-outline-transparent" onclick="window.location.href='/dash'">Home</button>
+        <br>
+
+        <button class="btn1 btn-outline-transparent" target="_self" onclick="window.location.href='/dash/flatpost/create'">Create Post</button>
+
+        <br>
+        <button class="btn1 btn-outline-transparent" onclick="window.location.href='#'">Messages</button>
+      </aside>
+
+      <!-- 🔹 MAIN CONTENT -->
+      <main class="main-content">
+        <h3>Flat Posts</h3>
+
+      <table class="table table-bordered table-hover mt-3">
+  <thead class="table-dark">
+    <tr>
+      <th>Sr no</th>
+      <th>username</th>
+      <th>Location</th>
+      <th>City</th>
+      <th>Gender Preferred</th>
+      <th>Description</th>
+      <th class="action text-center">Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for post in posts %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td>{{ post.user_name }}</td>
+      <td>{{ post.location }}</td>
+      <td>{{ post.city }}</td>
+      <td>{{ post.preferred_gender.value }}</td>
+      <td>{{ post.description }}</td>
+      <td class="text-center">
+        <form method="post" action="/dash/flatpost/deletepost/{{ post.id }}">
+          <button type="submit" onclick="return confirm('Are you sure you want to delete this post?');" class="btn btn-danger btn-sm">
+            Delete
+          </button>
+        </form>
+        <form>
+        <button class="btn btn-primary btn-sm">
+          Message
+        </button>
+      </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+      </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
