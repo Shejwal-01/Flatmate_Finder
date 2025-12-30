@@ -31,6 +31,25 @@ def show_dashboard(request: Request,
         {"request": request, "user": current_user, "posts": posts}
     )
     
+@router.get("/myposts")
+def show_myposts(request: Request, 
+                   current_user: User = Depends(get_current_user),
+                   db: Session = Depends(get_db)
+                   ):
+    myposts = (
+    db.query(Flat).filter(Flat.user_id == current_user.id)
+    .order_by(Flat.created_at.desc())
+    .all()
+)
+
+    return templates.TemplateResponse(
+        "myposts.html",
+        {"request": request, "user": current_user, "myposts": myposts}
+    )   
+    
+    
+    
+    
 
 @router.get("/flatpost/createpost")
 def create_flatpost(
@@ -103,7 +122,9 @@ def create_flatpost(request: Request,
 @router.get("/logout")
 def logout_user():
     
-    response = RedirectResponse("/auth/login?logged_out=1", status_code=302)
+    response = RedirectResponse("/auth/login?logged_out=1",
+                                status_code=302
+    )
     response.delete_cookie("access_token")
     return response
 

@@ -30,7 +30,7 @@ def get_current_user(
     except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid or expired token"
+            detail="Invalid or expired token. Login again"
         )
 
     user = db.query(User).filter(User.id == user_id).first()

@@ -7,7 +7,6 @@ from backend.utils.jwt import create_access_token
 from backend.schemas.user import UserCreate
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
-from backend.dependencies.auth import get_current_user
 
 templates = Jinja2Templates(directory="frontend/templates")
 
@@ -132,6 +131,6 @@ def login(
         url="/dash",
         status_code=303
     )
-    response.set_cookie(key="access_token", value=token, httponly=True, samesite="lax")
+    response.set_cookie(key="access_token", value=token, httponly=True, samesite="lax", secure=True)
 
     return response
