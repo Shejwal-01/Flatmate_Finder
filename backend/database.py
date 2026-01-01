@@ -2,7 +2,8 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = os.getenv("postgresql://flatmate_db_user:Pikfz4K0NsA7iXppzd92SOZxrOBYtQ0c@dpg-d5b9aa63jp1c73d49gh0-a/flatmate_db")
+# ✅ Correct: read env variable NAME
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL environment variable not set")
