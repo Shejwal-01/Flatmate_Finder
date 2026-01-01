@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 
 from backend.database import engine
-from backend.models import Base
+from backend.database import Base
 from backend.routes.auth import router as auth_router, templates
 from backend.routes.messages import router as msg_router
 from backend.routes.dashboard import router as dash_router
