@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Request, HTTPException, Form
 from sqlalchemy.orm import Session
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import or_, and_
-
+from fastapi.responses import RedirectResponse
 from backend.database import get_db
 from backend.dependencies.auth import get_current_user
 from backend.models.message import Message
@@ -64,6 +64,9 @@ def open_chat(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
+    if not flat_id:
+        raise HTTPException(status_code=400, detail="flat_id is required")
+
     receiver = db.query(User).filter(User.id == receiver_id).first()
     if not receiver:
         raise HTTPException(status_code=404, detail="User not found")
@@ -94,7 +97,7 @@ def open_chat(
             "receiver": receiver,
             "messages": messages,
             "flat": flat,
-            "flat_id": flat_id,
+            "flat_id": flat.id,
             "current_user": current_user
         }
     )
@@ -116,5 +119,10 @@ def send_message(
 
     db.add(new_message)
     db.commit()
+    db.refresh(new_message)
+    response = RedirectResponse(
+    url=f"/messages/m{receiver_id}?flat_id={flat_id}",
+    status_code=303
+)
+    return response
 
-    return {"success": True}
