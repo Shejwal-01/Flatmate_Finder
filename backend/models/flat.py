@@ -1,8 +1,7 @@
 import enum
 from sqlalchemy import Column, Integer, String, Enum, TIMESTAMP, ForeignKey
 from sqlalchemy.sql import func
-from backend.database import base
-
+from backend.database import Base
 
 class GenderEnum(enum.Enum):
     male = "male"
@@ -10,7 +9,7 @@ class GenderEnum(enum.Enum):
     other = "other"
     any = "any"
     
-class Flat(base):
+class Flat(Base):
     __tablename__ = "flats"
     
     id = Column(Integer, primary_key = True, index = True )

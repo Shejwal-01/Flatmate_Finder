@@ -2,14 +2,14 @@ import enum
 from sqlalchemy import Column, Integer, String, Enum, TIMESTAMP
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql import func
-from backend.database import base
+from backend.database import Base
 
 class GenderEnum(enum.Enum):
     male = "male"
     female = "female"
     other = "other"
     
-class User(base):
+class User(Base):
     __tablename__ = "users"
     
     id = Column(Integer, primary_key = True, index = True )

@@ -2,7 +2,6 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# ✅ Correct: read env variable NAME
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if not DATABASE_URL:
@@ -10,7 +9,8 @@ if not DATABASE_URL:
 
 engine = create_engine(
     DATABASE_URL,
-    pool_pre_ping=True
+    pool_pre_ping=True,
+    future= True
 )
 
 Base = declarative_base()
