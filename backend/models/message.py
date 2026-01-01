@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, Text, TIMESTAMP, ForeignKey
 from sqlalchemy.sql import func
 from backend.database import base
+from sqlalchemy.orm import relationship
 
 class Message(base):
     __tablename__ = "messages"
@@ -15,4 +16,8 @@ class Message(base):
     receiver_id = Column(Integer,
         ForeignKey("users.id"))
     flat_id = Column(Integer,
-        ForeignKey("flats_id"))
+        ForeignKey("flats.id"))
+    
+    sender = relationship("User", foreign_keys=[sender_id])
+    receiver = relationship("User", foreign_keys=[receiver_id])
+    flat = relationship("Flat")

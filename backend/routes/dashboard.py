@@ -28,7 +28,7 @@ def show_dashboard(request: Request,
 
     return templates.TemplateResponse(
         "dashboard.html",
-        {"request": request, "user": current_user, "posts": posts}
+        {"request": request, "current_user": current_user, "posts": posts}
     )
     
 @router.get("/myposts")
@@ -44,7 +44,7 @@ def show_myposts(request: Request,
 
     return templates.TemplateResponse(
         "myposts.html",
-        {"request": request, "user": current_user, "myposts": myposts}
+        {"request": request, "current_user": current_user, "myposts": myposts}
     )   
     
     
@@ -66,7 +66,7 @@ def create_flatpost(
         "flatpost.html",
         {
             "request": request,
-            "user": current_user,
+            "current_user": current_user,
             "alert": alert
         }
     )
@@ -149,7 +149,7 @@ def delete_flatpost(
         "dashboard.html",
         {
             "request": request,
-            "user": current_user,
+            "current_user": current_user,
             "posts": posts,
             "alert": alert
         }

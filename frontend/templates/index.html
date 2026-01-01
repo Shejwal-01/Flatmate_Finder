@@ -3,6 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', path='favicon.png') }}"
+    />
     <title>FlatMate Finder</title>
 
     <link
@@ -47,11 +52,13 @@
     {% endif %}
 
     <header class="title">
-      <h1 style="pointer-events: none;">Welcome to FlatMate Finder!</h1>
+      <h1 style="pointer-events: none">Welcome to FlatMate Finder!</h1>
     </header>
 
     <div class="container form-container">
-      <h2 class="text-center fw-bold mb-2">Sign up</h2>
+      <h2 class="text-center fw-bold mb-2" style="pointer-events: none">
+        Sign up
+      </h2>
       <p class="text-center mb-4">
         Already have an account?
         <a href="/auth/login" target="_top">Log in</a>
@@ -81,10 +88,10 @@
           />
         </div>
         <script>
-          const usernameInput = document.getElementById('username');
- 
-          usernameInput.addEventListener('input', function() {
-          this.value = this.value.toLowerCase();
+          const usernameInput = document.getElementById("username");
+
+          usernameInput.addEventListener("input", function () {
+            this.value = this.value.toLowerCase();
           });
         </script>
 

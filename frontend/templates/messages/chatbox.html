@@ -1,0 +1,94 @@
+{% extends "base_chat.html" %} {% block title %}Chat | FlatMate Finder{%
+endblock %} {% block extra_css %}
+<style>
+  /* ===== CHAT LAYOUT ===== */
+  .chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #cfe7ee;
+  }
+
+  .chat-header {
+    padding: 12px 16px;
+    border: 2px inset #bfdbe6;
+    background: #0b1c3f;
+    color: white;
+  }
+
+  .flat-location {
+    display: block;
+    font-size: 0.85rem;
+    color: #d1d9ff;
+  }
+
+  .chat-messages {
+    font-size: 25px;
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+  }
+
+  .chat-input {
+    position: bottom;
+    display: flex;
+    padding: 12px;
+    background: white;
+    border-top: 1px solid #ddd;
+  }
+
+  .chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px inset #ccc;
+  }
+
+  .chat-input button {
+    padding: 10px 18px;
+    background: green;
+    color: white;
+    border: 1px inset;
+  }
+</style>
+{% endblock %} {% block chatcontent %}
+<div class="chat-container">
+  <div class="chat-header">
+    <h4 style="pointer-events: none">
+      Chat with {{ receiver.username }}
+      <small class="flat-location">
+        📍{{ flat.location }} {% if flat.rent %} • ₹{{ flat.rent }}{% endif %}
+      </small>
+    </h4>
+  </div>
+
+  <div class="chat-messages">
+    {% for msg in messages %}
+    <div
+      class="{% if msg.sender_id == current_user.id %}text-end{% else %}text-start{% endif %} mb-2"
+    >
+      <span
+        class="badge bg-{% if msg.sender_id == current_user.id %}primary{% else %}secondary{% endif %}"
+      >
+        {{ msg.message }}
+      </span>
+    </div>
+    {% endfor %}
+  </div>
+
+  <form class="chat-input" method="post" action="/messages/send">
+    <input type="hidden" name="receiver_id" value="{{ receiver.id }}" />
+    <input
+      type="hidden"
+      name="flat_id"
+      value="{{ flat_id }}"
+    />
+    <input
+      type="text"
+      name="message"
+      placeholder="Type a message..."
+      required
+    />
+    <button type="submit">Send</button>
+  </form>
+</div>
+{% endblock %}

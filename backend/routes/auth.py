@@ -7,6 +7,7 @@ from backend.utils.jwt import create_access_token
 from backend.schemas.user import UserCreate
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
+from backend.dependencies.auth import get_current_user
 
 templates = Jinja2Templates(directory="frontend/templates")
 
@@ -84,6 +85,7 @@ def register(
 @router.get("/login")
 def show_login(
     request: Request,
+    
     success: int | None = None,
     logged_out: int | None = None
 ):
@@ -103,6 +105,7 @@ def show_login(
     return templates.TemplateResponse(
         "login.html",
         {
+            
             "request": request,
             "alert": alert,
             "alert_type": alert_type
@@ -113,6 +116,7 @@ def show_login(
 @router.post("/login")
 def login(
     request: Request,
+    
     username : str = Form(...),
     password: str =Form(...),
     db: Session = Depends(get_db)

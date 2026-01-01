@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', path='favicon.png') }}"
+    />
+    <title>{% block title %}FlatMate Finder{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        background-color: #bfdbe6;
+        border: 2px inset #bfdbe6;
+      }
+
+      /* ===== GRID LAYOUT ===== */
+      .app-layout {
+        display: grid;
+        grid-template-rows: 57px 1fr;
+        grid-template-columns: 150px 1fr;
+        height: 100vh;
+      }
+
+      header {
+        grid-column: 1 / -1;
+        background-color: rgb(27, 35, 72);
+      }
+
+      /* ===== NAVBAR ===== */
+      .navbar {
+        height: 56px;
+        position: relative;
+        border: 2px inset #bfdbe6;
+      }
+
+      .dropdown-menu {
+        position: absolute !important;
+        top: 100%;
+        right: 0;
+        margin-top: 8px;
+        transform-origin: top right;
+        animation: fadeIn 0.15s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-5px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ===== SIDEBAR ===== */
+      .sidebar {
+        background-color: #1b2348;
+        padding-top: 30px;
+        border: 2px inset #bfdbe6;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .sidebar .btn1:hover {
+        background-color: #bfdbe6;
+        color: #1b2348;
+      }
+
+      .sidebar .btn1:active {
+        transform: scale(0.97);
+      }
+
+      .sidebar .btn1 {
+        background-color: #1b2348;
+
+        border-radius: 4px;
+        color: #bfdbe6;
+        height: 40px;
+        width: 143px;
+        border: 1px;
+        margin: 10px 0;
+        display: block;
+      }
+      .chat-list {
+        width: 200px;
+        background-color: #1b2348;
+        border-right: 2px inset #bfdbe6;
+        overflow-y: auto;
+      }
+
+      /* ===== MAIN CONTENT ===== */
+
+      .chat-item {
+        display: block;
+        padding: 12px 16px;
+        text-decoration: none;
+        color: #4da3ff;
+        /* username */
+      }
+
+      .chat-item strong {
+        color: #4da3ff;
+      }
+
+      .chat-item .flat-location {
+        display: block;
+        color: #d1d9ff;
+        font-size: 0.85rem;
+        margin-top: 2px;
+      }
+
+      .chat-item:hover {
+        background-color: #bfdbe6;
+      }
+
+      .chat-item:hover strong,
+      .chat-item:hover .flat-location {
+        color: #1b2348;
+      }
+
+      .main-content {
+        padding: 0;
+        border: 2px inset #bfdbe6;
+        overflow: hidden;
+      }
+
+      /* ===== CHAT LAYOUT ===== */
+      .chat-layout {
+        display: flex;
+        height: calc(100vh - 57px);
+      }
+
+      /* ===== LEFT CHAT LIST ===== */
+
+      .chat-layout {
+        display: flex;
+        height: calc(100vh - 57px);
+      }
+
+      .p-3 {
+        color: #bfdbe6;
+      }
+
+      .list a:hover {
+        align-items: center;
+        background-color: #bfdbe6;
+        color: #1b2348;
+      }
+    </style>
+    {% block extra_css %}{% endblock %}
+  </head>
+
+  <body>
+    <div class="app-layout">
+      <!-- 🔹 NAVBAR -->
+      <header>
+        <nav class="navbar navbar-dark">
+          <div class="container-fluid">
+            <h1 class="navbar-brand" style="pointer-events: none">
+              FlatMate Finder
+            </h1>
+
+            <ul class="navbar-nav flex-row ms-auto">
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                >
+                  <img
+                    src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png"
+                    class="rounded-circle"
+                    height="32"
+                  />
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <a class="dropdown-item" href="#"
+                      >{{ current_user.username }}</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/dash/logout">Logout</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+
+      <!-- 🔹 SIDEBAR -->
+      <aside class="sidebar">
+        <button
+          class="btn1 btn-outline-transparent"
+          onclick="window.location.href='/dash'"
+        >
+          Home
+        </button>
+        <br />
+
+        <button
+          class="btn1 btn-outline-transparent"
+          onclick="window.location.href='/dash/flatpost/createpost'"
+        >
+          Create Post
+        </button>
+        <br />
+        <button
+          class="btn1 btn-outline-transparent"
+          onclick="window.location.href='/dash/myposts'"
+        >
+          My Posts
+        </button>
+
+        <br />
+        <button
+          class="btn1 btn-outline-transparent"
+          onclick="window.location.href='/messages/chats'"
+        >
+          Messages
+        </button>
+      </aside>
+
+      <main class="main-content">
+        <div class="chat-layout">
+          {% if not receiver %}
+          <div class="chat-list">
+            <h5 class="p-3" style="pointer-events: none">Inbox</h5>
+
+            <ul class="list-group list-group-flush w-100">
+              {% for chat in chat_users %}
+              <a
+                href="/messages/m{{ chat.user.id }}?flat_id={{ chat.flat.id }}"
+                class="chat-item"
+              >
+                <strong>{{ chat.user.username }}</strong>
+                <small class="flat-location">
+                  📍 {{ chat.flat.location }}
+                </small>
+              </a>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %} {% block chatcontent %}{% endblock %}
+        </div>
+      </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

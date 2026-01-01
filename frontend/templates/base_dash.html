@@ -3,9 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>FlatMate Finder</title>
+    <link
+  rel="icon"
+  type="image/png"
+  href="{{ url_for('static', path='favicon.png') }}"
+>
+    <title>{% block title %}FlatMate Finder{% endblock %}</title>
+    
 
-    <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -95,81 +100,23 @@
       }
 
       /* ===== MAIN CONTENT ===== */
-.main-content {
-  padding: 0;
-  border: 2px inset #bfdbe6;
-  overflow: hidden;
-}
-
-/* ===== CHAT LAYOUT ===== */
-.chat-layout {
-  display: flex;
-  height: calc(100vh - 57px);
-}
-
-/* ===== LEFT CHAT LIST ===== */
-.chat-list {
-  width: 200px;
-  padding-top: 30px;
-  background: #37165fde;
-  border-right: 2px inset #bfdbe6;
-  overflow-y: auto;
-}
-
-.chat-item {
-  padding: 14px;
-  cursor: pointer;
-  color: #fff;
-}
-.chat-item.active {
-  background: #07581ed8;
-  font-weight: bold;
-}
-.chat-layout {
-  display: flex;
-  height: calc(100vh - 57px);
-}
-
-.chat-list {
-  width: 220px;
-  background: #4b2e73;
-  border-right: 2px inset #bfdbe6;
-}
-
-.chat-item {
-  padding: 16px;
-  color: white;
-  font-weight: 600;
-  background: #145a32; /* active */
-}
-
-
-
-.chat-item:hover {
-  color: #37165fde;
-  background: #bfdbe6;
-}
-
-/* ===== CHAT BOX ===== */
-.chatbox {
-  flex: 1;
-  background: #f5f5f5;
-  padding: 20px;
-  overflow-y: auto;
-}
-
-.empty-state {
-  color: #555;
-  text-align: center;
-  margin-top: 40px;
-}
-
-      
+      .main-content {
+        padding: 20px;
+        border: 2px inset #bfdbe6;
+        overflow-y: auto;
+      }
       
     </style>
+    {% block extra_css %}{% endblock %}
   </head>
 
   <body>
+    {% if alert %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ alert }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
     <div class="app-layout">
       <!-- 🔹 NAVBAR -->
       <header>
@@ -193,7 +140,8 @@
                 </a>
 
                 <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" href="#">My profile</a></li>
+                  <li><a class="dropdown-item" href="#">{{ current_user.username }}</a></li>
+
                   <li><a class="dropdown-item" href="/dash/logout">Logout</a></li>
                 </ul>
               </li>
@@ -209,87 +157,18 @@
 
         <button class="btn1 btn-outline-transparent" onclick="window.location.href='/dash/flatpost/createpost'">Create Post</button>
         <br>
-
-        <button class="btn1 btn-outline-transparent" onclick="window.location.href='/dash/flatpost/myposts'">My Posts</button>
+        <button class="btn1 btn-outline-transparent" onclick="window.location.href='/dash/myposts'">My Posts</button>
 
         <br>
-   
-        <button class="btn1 btn-outline-transparent" onclick="window.location.href='/messages'">Messages</button>
-    
+        <button class="btn1 btn-outline-transparent" onclick="window.location.href='/messages/chats'">Messages</button>
       </aside>
 
-      <!-- 🔹 MAIN CONTENT -->
       <main class="main-content">
-
-  <div class="chat-layout">
-
-    <div class="sidebar">
-  <h5 class="p-3">Chat</h5>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item active">
-      {{ receiver.username }}
-    </li>
-  </ul>
-</div>
-
-
-    <!-- Right chat box -->
-    <div class="chat-box">
-  <h4>Chat with {{ receiver.username }}</h4>
-
-  <div class="messages">
-    {% for msg in messages %}
-      <div class="{% if msg.sender_id == current_user.id %}text-end{% else %}text-start{% endif %}">
-        <span class="badge bg-{% if msg.sender_id == current_user.id %}primary{% else %}secondary{% endif %}">
-          {{ msg.message }}
-        </span>
-      </div>
-    {% endfor %}
-  </div>
-
-  <form method="post" action="/messages/send">
-    <input type="hidden" name="receiver_id" value="{{ receiver.id }}">
-    <input type="hidden" name="flat_id" value="{{ flat_id }}">
-
-    <div class="input-group mt-3">
-      <input name="message" class="form-control" required>
-      <button class="btn btn-success">Send</button>
-    </div>
-  </form>
-</div>
-
-
-  </div>
-
-</main>
-
-
-    <!-- Bootstrap JS -->
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-  const selectedUser = "{{ selected_user }}";
-
-  function openChat(username) {
-    document.querySelectorAll('.chat-item')
-      .forEach(item => item.classList.remove('active'));
-
-    const activeItem = document.getElementById(`chat-${username}`);
-    if (activeItem) activeItem.classList.add('active');
-
-    document.getElementById("chatbox").innerHTML = `
-      <h4>Chat with ${username}</h4>
-      <div class="messages">
-        <!-- messages will load here -->
-      </div>
-    `;
-  }
-
-  // AUTO OPEN CHAT AFTER REDIRECT
-  if (selectedUser) {
-    openChat(selectedUser);
-  }
-</script>
-
-</body>
+        {% block dash %}{% endblock %}
+        {% block createpost%}{% endblock %}
+        {% block myposts%}{% endblock %}
+      </main>
+        
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>
