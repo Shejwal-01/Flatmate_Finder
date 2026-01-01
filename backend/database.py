@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "mysql+pymysql://root:shejwal@localhost:3306/flatmate_db"
+DATABASE_URL = "mysql+pymysql://uname:pswd@localhost/db"
 
 engine = create_engine(DATABASE_URL)
 base = declarative_base()
