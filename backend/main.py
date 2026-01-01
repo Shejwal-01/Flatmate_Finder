@@ -6,7 +6,8 @@ from backend.routes.auth import templates
 from backend.routes.messages import router as msg_router
 from backend.routes.dashboard import router as dash_router
 from fastapi.staticfiles import StaticFiles
-
+from backend.models import Base
+from backend.database import engine
 
 
 
@@ -20,7 +21,7 @@ app.mount(
     StaticFiles(directory="frontend/static"),
     name="static",
 )
-
+Base.metadata.create_all(bind=engine)
 @app.get("/")
 def show_site(request: Request):
     return templates.TemplateResponse(
