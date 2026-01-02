@@ -36,10 +36,27 @@
       }
 
       /* ===== NAVBAR ===== */
+      .navbar-brand img {
+        position: relative;
+        top: 0.5px;
+        filter: drop-shadow(0 0 4px rgba(191, 219, 230, 0.6));
+      }
+      .navbar-brand span {
+        position: relative;
+        top: -1px;
+      }
+
       .navbar {
+        padding-top: 4px;
+        padding-bottom: 4px;
         height: 56px;
         position: relative;
         border: 2px inset #bfdbe6;
+      }
+      @media (max-width: 576px) {
+        .navbar-brand span {
+          font-size: 1.1rem;
+        }
       }
 
       .dropdown-menu {
@@ -159,6 +176,21 @@
         background-color: #bfdbe6;
         color: #1b2348;
       }
+      .context {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1b2348;
+      }
+      .context h2 {
+        font-size: 2.5rem;
+        opacity: 0.6;
+        user-select: none;
+      }
+      .context img {
+        padding-bottom: 2px;
+      }
     </style>
     {% block extra_css %}{% endblock %}
   </head>
@@ -169,9 +201,18 @@
       <header>
         <nav class="navbar navbar-dark">
           <div class="container-fluid">
-            <h1 class="navbar-brand" style="pointer-events: none">
-              FlatMate Finder
-            </h1>
+            <div
+              class="navbar-brand d-flex align-items-center gap-0.5"
+              style="pointer-events: none"
+            >
+              <img
+                src="{{ url_for('static', path='favicon.png') }}"
+                alt="FlatMate Finder Logo"
+                width="28"
+                height="28"
+              />
+              <span class="fw-semibold fs-5">FlatMate Finder</span>
+            </div>
 
             <ul class="navbar-nav flex-row ms-auto">
               <li class="nav-item dropdown">
@@ -256,6 +297,16 @@
               </a>
               {% endfor %}
             </ul>
+          </div>
+          <div class="context">
+            <h2>
+              <img
+                src="{{ url_for('static', path='favicon.png') }}"
+                alt="Logo"
+                width="55"
+                height="55"
+              />FlatMate Finder
+            </h2>
           </div>
           {% endif %} {% block chatcontent %}{% endblock %}
         </div>
