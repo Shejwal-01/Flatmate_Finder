@@ -16,23 +16,32 @@
       rel="stylesheet"
     />
     <style>
+      * {
+        box-sizing: border-box;
+        }
+
       body {
         margin: 0;
         background-color: #bfdbe6;
-        border: 2px inset #bfdbe6;
+        overflow: hidden;
       }
 
       /* ===== GRID LAYOUT ===== */
       .app-layout {
         display: grid;
         grid-template-rows: 57px 1fr;
-        grid-template-columns: 150px 1fr;
+        grid-template-columns: 56px 200px 1fr;
         height: 100vh;
+      }
+
+      .app-layout.sidebar-expanded {
+        grid-template-columns: 200px 200px 1fr;
       }
 
       header {
         grid-column: 1 / -1;
-        background-color: rgb(27, 35, 72);
+        background-color: #1b2348;
+        z-index: 100;
       }
 
       /* ===== NAVBAR ===== */
@@ -51,7 +60,6 @@
         padding-bottom: 4px;
         height: 56px;
         position: relative;
-        border: 2px inset #bfdbe6;
       }
       @media (max-width: 576px) {
         .navbar-brand span {
@@ -81,14 +89,97 @@
       }
 
       /* ===== SIDEBAR ===== */
+      .sidebar-wrapper {
+        position: relative;
+        background-color: #1b2348;
+        width: 56px;
+        transition: width 0.3s ease;
+        z-index: 10;
+      }
+      .sidebar-expanded .sidebar-wrapper {
+        width: 200px;
+      }
       .sidebar {
         background-color: #1b2348;
-        padding-top: 30px;
-        border: 2px inset #bfdbe6;
-
+        padding-top: 10px;
         display: flex;
         flex-direction: column;
         align-items: center;
+      }
+      .sidebar-wrapper {
+        background-color: #1b2348;
+        overflow: hidden;
+      }
+
+      .sidebar {
+        padding-top: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      /* Toggle inside sidebar */
+      .sidebar-toggle {
+        background-color: #1b2348;
+        color: #bfdbe6;
+        border: none;
+        height: 45px;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      .sidebar-toggle:hover {
+        background-color: #bfdbe6;
+        color: #1b2348;
+      }
+
+      /* Sidebar buttons */
+      .btn1 {
+        background-color: #1b2348;
+        color: #bfdbe6;
+        height: 45px;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 16px;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .btn1:hover {
+        background-color: #bfdbe6;
+        color: #1b2348;
+      }
+
+      .btn1 span {
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+
+      /* Show text when expanded */
+      .sidebar-expanded .btn1 span {
+        opacity: 1;
+      }
+
+      /* Icon always visible */
+      .icon {
+        font-size: 18px;
+        width: 24px;
+        text-align: center;
+      }
+      .sidebar-toggle {
+        background-color: #1b2348;
+        color: #bfdbe6;
+        border: none;
+        height: 45px;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      .sidebar-toggle:hover {
+        background-color: #bfdbe6;
+        color: #1b2348;
       }
 
       .sidebar .btn1:hover {
@@ -111,10 +202,58 @@
         margin: 10px 0;
         display: block;
       }
+      .inbox-collapsed .chat-list {
+        display: none;
+      }
+
+      .inbox-wrapper {
+        position: relative;
+        border-left: none;
+        background-color: #1b2348;
+        width: 200px;
+        min-width: 200px;
+        max-width: 200px;
+        transition: width 0.3s ease;
+        z-index: 20; 
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .app-layout.inbox-collapsed {
+        grid-template-columns: 56px 56px 1fr;
+      }
+      .app-layout.sidebar-expanded.inbox-collapsed {
+        grid-template-columns: 200px 56px 1fr;
+      }
+      .inbox-collapsed .inbox-wrapper {
+        width: 56px;
+        min-width: 56px;
+        max-width: 56px;
+      }
+
+      .inbox {
+        display: flex;
+        flex-direction: column;
+        padding-top: 10px;
+      }
+
+      .inbox-toggle {
+        background-color: #1b2348;
+        color: #bfdbe6;
+        border: none;
+        height: 45px;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      .inbox-toggle:hover {
+        background-color: #bfdbe6;
+        color: #1b2348;
+      }
+
       .chat-list {
         width: 200px;
         background-color: #1b2348;
-        border-right: 2px inset #bfdbe6;
+
         overflow-y: auto;
       }
 
@@ -150,25 +289,21 @@
 
       .main-content {
         padding: 0;
-        border: 2px inset #bfdbe6;
+
         overflow: hidden;
       }
 
       /* ===== CHAT LAYOUT ===== */
       .chat-layout {
-        display: flex;
+        overflow: hidden;
         height: calc(100vh - 57px);
       }
 
       /* ===== LEFT CHAT LIST ===== */
 
-      .chat-layout {
-        display: flex;
-        height: calc(100vh - 57px);
-      }
-
       .p-3 {
         color: #bfdbe6;
+        
       }
 
       .list a:hover {
@@ -176,7 +311,13 @@
         background-color: #bfdbe6;
         color: #1b2348;
       }
+      .main-content {
+        border: none;
+      }
+
       .context {
+        min-width: 0; 
+       
         flex: 1;
         display: flex;
         align-items: center;
@@ -191,12 +332,26 @@
       .context img {
         padding-bottom: 2px;
       }
+      @media (max-width: 768px) {
+        .btn1 {
+          gap: 2px;
+          display: flex;
+          align-items: left;
+        }
+        .btn1 span {
+          font-size: 10px;
+        }
+       
+        .app-layout.sidebar-expanded {
+          grid-template-columns: 30% 30% 1fr;
+        }
+      }
     </style>
     {% block extra_css %}{% endblock %}
   </head>
 
   <body>
-    <div class="app-layout">
+    <div class="app-layout" id="layout">
       <!-- 🔹 NAVBAR -->
       <header>
         <nav class="navbar navbar-dark">
@@ -246,43 +401,46 @@
       </header>
 
       <!-- 🔹 SIDEBAR -->
-      <aside class="sidebar">
-        <button
-          class="btn1 btn-outline-transparent"
-          onclick="window.location.href='/dash'"
-        >
-          Home
-        </button>
-        <br />
+      <aside class="sidebar-wrapper">
+        <div class="sidebar">
+          <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 
-        <button
-          class="btn1 btn-outline-transparent"
-          onclick="window.location.href='/dash/flatpost/createpost'"
-        >
-          Create Post
-        </button>
-        <br />
-        <button
-          class="btn1 btn-outline-transparent"
-          onclick="window.location.href='/dash/myposts'"
-        >
-          My Posts
-        </button>
+          <button class="btn1" onclick="window.location.href ='/dash'">
+            <span class="icon">🏠</span>
+            <span>Home</span>
+          </button>
 
-        <br />
-        <button
-          class="btn1 btn-outline-transparent"
-          onclick="window.location.href='/messages/chats'"
-        >
-          Messages
-        </button>
+          <button
+            class="btn1"
+            onclick="window.location.href
+            ='/dash/flatpost/createpost'"
+          >
+            <span class="icon">➕</span>
+            <span>Create Post</span>
+          </button>
+
+          <button class="btn1" onclick="window.location.href ='/dash/myposts'">
+            <span class="icon">📄</span>
+            <span>My Posts</span>
+          </button>
+
+          <button
+            class="btn1"
+            onclick="window.location.href
+            ='/messages/chats'"
+          >
+            <span class="icon">💬</span>
+            <span>Messages</span>
+          </button>
+        </div>
       </aside>
+      {% if not receiver %}
+      <aside class="inbox-wrapper">
+        <div class="inbox">
+          <button class="inbox-toggle" onclick="toggleInbox()">💬</button>
 
-      <main class="main-content">
-        <div class="chat-layout">
-          {% if not receiver %}
           <div class="chat-list">
-            <h5 class="p-3" style="pointer-events: none">Inbox</h5>
+            <h5 class="p-3" style="pointer-events: none align-text: center";>Inbox</h5>
 
             <ul class="list-group list-group-flush w-100">
               {% for chat in chat_users %}
@@ -298,22 +456,41 @@
               {% endfor %}
             </ul>
           </div>
-          <div class="context">
-            <h2>
-              <img
-                src="{{ url_for('static', path='favicon.png') }}"
-                alt="Logo"
-                width="55"
-                height="55"
-              />FlatMate Finder
-            </h2>
-          </div>
-          {% endif %} {% block chatcontent %}{% endblock %}
         </div>
+      </aside>
+      {% endif %}
+
+      <main class="main-content">
+        <div class="chat-layout">
+          
+      <div class="context">
+        <h2>
+            <img
+              src="{{ url_for('static', path='favicon.png') }}"
+              alt="Logo"
+              width="55"
+              height="55"
+            />FlatMate Finder
+          </h2>
+      </div>
+
+          
+
+          {% block chatcontent %}{% endblock %}
+        
       </main>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function toggleSidebar() {
+        document.getElementById("layout").classList.toggle("sidebar-expanded");
+      }
+
+      function toggleInbox() {
+        document.getElementById("layout").classList.toggle("inbox-collapsed");
+      }
+    </script>
   </body>
 </html>
