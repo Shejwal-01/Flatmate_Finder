@@ -1,15 +1,69 @@
-{% extends "base_dash.html"%} {% block title %}FlatMate Finder{%endblock%} {%
-block extra_css %}
+{% extends "base_dash.html" %}
+{% block title %}FlatMate Finder{% endblock %}
+
+{% block extra_css %}
 <style>
   .posts_info {
     font-size: 25px;
   }
-  .srno {
-    align-items: center;
+
+  /* ================= RESPONSIVE TABLE (STACK ON MOBILE) ================= */
+  @media (max-width: 768px) {
+
+    table {
+      width: 100%;
+    }
+
+    thead {
+      display: none;
+    }
+
+    tbody,
+    tr,
+    td {
+      display: block;
+      width: 100%;
+    }
+
+    tr {
+      margin-bottom: 16px;
+      border: 2px inset #bfdbe6;
+      padding: 10px;
+      background: #fff;
+    }
+
+    td {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 8px 10px;
+      border: none;
+      border-bottom: 1px solid #ddd;
+      gap: 10px;
+      text-align: right;
+    }
+
+    td::before {
+      content: attr(data-label);
+      font-weight: 600;
+      color: #1b2348;
+      text-align: left;
+      flex: 1;
+    }
+
+    td:last-child {
+      border-bottom: none;
+      justify-content: center;
+    }
+
+    td[data-label="Action"] {
+      justify-content: center;
+    }
   }
 </style>
-{%endblock%} {% block myposts %}
+{% endblock %}
 
+{% block myposts %}
 <h3 style="pointer-events: none">Flat Posts</h3>
 
 <table class="table table-bordered table-hover mt-3">
@@ -21,22 +75,39 @@ block extra_css %}
       <th class="text-center">Rent</th>
       <th class="text-center">Gender Preferred</th>
       <th>Description</th>
-      <th class="action text-center">Action</th>
+      <th class="text-center">Action</th>
     </tr>
   </thead>
 
   <tbody>
     {% for post in myposts %}
     <tr>
-      <td class="text-center">{{ loop.index }}</td>
-      <td>{{ post.location }}</td>
-      <td>{{ post.city }}</td>
-      <td class="text-center">{{ post.rent }}</td>
-      <td class="text-center">{{ post.preferred_gender.value }}</td>
-      <td>{{ post.description }}</td>
-      <td class="text-center">
-        {% if post.user_id == current_user.id %}
+      <td data-label="Sr no." class="text-center">
+        {{ loop.index }}
+      </td>
 
+      <td data-label="Location">
+        {{ post.location }}
+      </td>
+
+      <td data-label="City">
+        {{ post.city }}
+      </td>
+
+      <td data-label="Rent" class="text-center">
+        {{ post.rent }}
+      </td>
+
+      <td data-label="Gender Preferred" class="text-center">
+        {{ post.preferred_gender.value }}
+      </td>
+
+      <td data-label="Description">
+        {{ post.description }}
+      </td>
+
+      <td data-label="Action" class="text-center">
+        {% if post.user_id == current_user.id %}
         <form method="post" action="/dash/flatpost/deletepost/{{ post.id }}">
           <button
             type="submit"
@@ -46,7 +117,6 @@ block extra_css %}
             Delete
           </button>
         </form>
-
         {% endif %}
       </td>
     </tr>
