@@ -3,6 +3,7 @@ endblock %} {% block extra_css %}
 <style>
   /* ===== CHAT LAYOUT ===== */
   .chat-container {
+    box-shadow: 2px 1px 5px 0px rgba(0,0,0,0.62);
     flex: 1;
     display: flex;
     height: 100%;
@@ -13,6 +14,7 @@ endblock %} {% block extra_css %}
   }
 
   .chat-header {
+    box-shadow: 2px 1px 5px 0px rgba(0,0,0,0.62);
     padding: 12px 16px;
     background: #1b2348;
     color: white;
@@ -32,35 +34,41 @@ endblock %} {% block extra_css %}
   }
 
   .chat-input {
-    position: relative;
     display: flex;
-    align-items: stretch;
-    padding: 12px;
-    background-color: #fff;
-    border-top: 1px solid #ddd;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    width: 100%;
+    border-radius: 3px;
+    box-sizing: border-box;
   }
 
   .chat-input input {
     flex: 1;
+    min-width: 0;
+    border-radius: 3px;
     padding: 10px;
-    border: 1px inset #ccc;
+    font-weight: 500;
+    font-size: 14px;
   }
 
   .chat-input button {
-    padding: 10px 18px;
-    background: green;
-    color: white;
-    border: 1px inset;
+    background-color: green;
+    border-radius: 3px;
+    padding: 10px 16px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  .chat-input button:active {
+    transform: scale(0.97);
   }
 
-  @media (max-width: 768px) {
+   @media (max-width: 768px) {
     .chat-input {
       background-color: #fff;
       overflow: auto;
       display: flex;
-      
       align-items: center;
-      margin-top: 16rem;
       border-radius: 7px;
     }
 
@@ -75,14 +83,7 @@ endblock %} {% block extra_css %}
     }
   }
 
-  @media (max-width: 426px) {
-    .chat-input {
-      display: flex;
-      justify-content: center;
-      margin: 0 10px;
-      margin-top: 16rem;
-    }
-  }
+  
 </style>
 {% endblock %} {% block chatcontent %}
 <div class="chat-container">
@@ -109,18 +110,16 @@ endblock %} {% block extra_css %}
     {% endfor %}
   </div>
 
-  
-    <form class="chat-input" method="post" action="/messages/send">
-      <input type="hidden" name="receiver_id" value="{{ receiver.id }}" />
-      <input type="hidden" name="flat_id" value="{{ flat_id }}" />
-      <input
-        type="text"
-        name="message"
-        placeholder="Type a message..."
-        required
-      />
-      <button type="submit">Send</button>
-    </form>
-  
+  <form class="chat-input" method="post" action="/messages/send">
+    <input type="hidden" name="receiver_id" value="{{ receiver.id }}" />
+    <input type="hidden" name="flat_id" value="{{ flat_id }}" />
+    <input
+      type="text"
+      name="message"
+      placeholder="Type a message..."
+      required
+    />
+    <button type="submit">Send</button>
+  </form>
 </div>
 {% endblock %}
