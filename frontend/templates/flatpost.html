@@ -4,13 +4,18 @@ block extra_css %}
   .red {
     color: red;
   }
+
+  ._form {
+    justify-content: center;
+    align-items: center;
+  }
 </style>
 {%endblock %} {% block createpost %}
 
 <h3 style="pointer-events: none">Create Flatmate Finder Post</h3>
 <br />
 
-<form action="/dash/flatpost/createpost" method="post">
+<form action="/dash/flatpost/createpost" method="post" class="_form">
   <div class="mb-3">
     <label class="form-label">Location<span class="red">*</span></label>
     <input

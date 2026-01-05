@@ -16,30 +16,50 @@
       rel="stylesheet"
     />
     <style>
+      * {
+        box-sizing: border-box;
+        }
+
       body {
         margin: 0;
         background-color: #bfdbe6;
-        border: 2px inset #bfdbe6;
+        overflow: hidden;
       }
 
       /* ===== GRID LAYOUT ===== */
       .app-layout {
         display: grid;
         grid-template-rows: 57px 1fr;
-        grid-template-columns: 150px 1fr;
+        grid-template-columns: 56px 150px 1fr;
         height: 100vh;
       }
 
+      .app-layout.sidebar-expanded {
+        grid-template-columns: 150px 150px 1fr;
+      }
+
       header {
+        box-shadow: 2px 1px 5px 0px rgba(0,0,0,0.62);
         grid-column: 1 / -1;
-        background-color: rgb(27, 35, 72);
+        background-color: #1b2348;
+        
       }
 
       /* ===== NAVBAR ===== */
-      .navbar {
-        height: 56px;
+      .navbar-brand img {
         position: relative;
-        border: 2px inset #bfdbe6;
+        top: 0.5px;
+        filter: drop-shadow(0 0 4px rgba(191, 219, 230, 0.6));
+      }
+      .navbar-brand span {
+        position: relative;
+        top: -1px;
+      }
+
+      @media (max-width: 576px) {
+        .navbar-brand span {
+          font-size: 1.1rem;
+        }
       }
 
       .dropdown-menu {
@@ -64,14 +84,99 @@
       }
 
       /* ===== SIDEBAR ===== */
+      .sidebar-wrapper {
+        grid-column: 1/2;
+        position: relative;
+        background-color: #1b2348;
+        width: 56px;
+        transition: width 0.5s ease;
+        z-index: 10;
+      }
+      .sidebar-expanded .sidebar-wrapper {
+        width: 150px;
+      }
       .sidebar {
         background-color: #1b2348;
-        padding-top: 30px;
-        border: 2px inset #bfdbe6;
-
+        padding-top: 10px;
         display: flex;
         flex-direction: column;
         align-items: center;
+      }
+      .sidebar-wrapper {
+        box-shadow: 2px 1px 5px 0px rgba(0,0,0,0.62);
+        background-color: #1b2348;
+        overflow: hidden;
+      }
+
+      .sidebar {
+        padding-top: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      /* Toggle inside sidebar */
+      .sidebar-toggle {
+        background-color: #1b2348;
+        color: #bfdbe6;
+        border: none;
+        height: 45px;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      .sidebar-toggle:hover {
+        background-color: #bfdbe6;
+        color: #1b2348;
+      }
+
+      /* Sidebar buttons */
+      .btn1 {
+        background-color: #1b2348;
+        color: #bfdbe6;
+        height: 45px;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 0 16px;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .btn1:hover {
+        background-color: #bfdbe6;
+        color: #1b2348;
+      }
+
+      .btn1 span {
+        opacity: 1;
+        transition: opacity 0.2s ease;
+      }
+
+      /* Show text when expanded */
+      .sidebar-expanded .btn1 span {
+        opacity: 1;
+      }
+
+      /* Icon always visible */
+      .icon {
+        font-size: 18px;
+        width: 24px;
+        text-align: center;
+      }
+      .sidebar-toggle {
+        background-color: #1b2348;
+        color: #bfdbe6;
+        border: none;
+        height: 45px;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      .sidebar-toggle:hover {
+        background-color: #bfdbe6;
+        color: #1b2348;
       }
 
       .sidebar .btn1:hover {
@@ -85,19 +190,65 @@
 
       .sidebar .btn1 {
         background-color: #1b2348;
-
-        border-radius: 4px;
         color: #bfdbe6;
-        height: 40px;
-        width: 143px;
-        border: 1px;
-        margin: 10px 0;
-        display: block;
+        height: 45px;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 0 16px;
+        white-space: nowrap;
+        overflow: hidden;
       }
-      .chat-list {
-        width: 200px;
+      .inbox-expanded .chat-list {
+        display: none;
+      }
+
+      .inbox-wrapper {
+        box-shadow: 2px 1px 5px 0px rgba(0,0,0,0.62);
+        grid-column: 2/3;
+        position: relative;
+        border-left: none;
         background-color: #1b2348;
-        border-right: 2px inset #bfdbe6;
+        width: 150px;
+        display: flex;
+        justify-content: center;
+        z-index: 20; 
+        overflow: hidden;
+        flex-shrink: 1;
+      }
+     
+      
+
+      .inbox {
+        display: flex;
+        align-items: stretch;
+        flex-direction: column;
+        padding-top: 10px;
+        height: 100%;
+      }
+
+      .inbox-toggle {
+        background-color: #1b2348;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        color: #bfdbe6;
+        border: none;
+        height: 40px;
+        font-size: 20px;
+      }
+
+      .inbox-toggle:hover {
+        background-color: #bfdbe6;
+        color: #1b2348;
+      }
+
+      .chat-list {
+        width: 150px;
+        background-color: #1b2348;
+
         overflow-y: auto;
       }
 
@@ -105,7 +256,11 @@
 
       .chat-item {
         display: block;
-        padding: 12px 16px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 12px 0;
         text-decoration: none;
         color: #4da3ff;
         /* username */
@@ -132,46 +287,141 @@
       }
 
       .main-content {
+        box-shadow: 2px 1px 5px 0px rgba(0,0,0,0.62);
         padding: 0;
-        border: 2px inset #bfdbe6;
-        overflow: hidden;
+        grid-column: 3/4;
+        overflow: auto;
       }
 
       /* ===== CHAT LAYOUT ===== */
       .chat-layout {
-        display: flex;
+        box-shadow: 2px 1px 5px 0px rgba(0,0,0,0.62);
+        overflow: hidden;
         height: calc(100vh - 57px);
       }
 
       /* ===== LEFT CHAT LIST ===== */
 
-      .chat-layout {
-        display: flex;
-        height: calc(100vh - 57px);
-      }
-
       .p-3 {
+        padding: 0;
+        margin: 0;
+        text-align: center;
+        pointer-events: none;
+        align-items: center;
         color: #bfdbe6;
+        
       }
 
-      .list a:hover {
+      .list-group {
+        overflow: auto;
+        display: flex;
         align-items: center;
+        width: auto;
+        height: auto;
+      }
+
+      .list-group a:hover {
+        
         background-color: #bfdbe6;
         color: #1b2348;
+      }
+      .list-group a:active {
+        transform: scale(0.97);
+      }
+      .main-content {
+        border: none;
+      }
+
+      .context {
+        min-width: 0; 
+        width: 100%;
+        height: 100%;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1b2348;
+      }
+      .context h2 {
+        text-align: center;
+        font-size: 2.5rem;
+        opacity: 0.6;
+        user-select: none;
+      }
+      .context img {
+        padding-bottom: 2px;
+      }
+      @media (max-width: 768px) {
+        .btn1 {
+          gap: 2px;
+          padding-left: 10px;
+          display: flex;
+          align-items: left;
+        }
+        .btn1 span {
+          margin-left: 5px;
+          margin-right: 11px;
+          font-size: 10px;
+        }
+
+        .app-layout {
+        display: grid;
+        grid-template-rows: 57px 1fr;
+        grid-template-columns: 56px 75px auto;
+        
+      }
+       
+        .app-layout.sidebar-expanded {
+          grid-template-columns: 30% 30% 1fr;
+        }
+
+        .chat-layout {
+          height: auto;
+          width: auto;
+        }
+
+        .inbox-wrapper {
+          display: block;
+          text-wrap: wrap;
+          font-size: 10px;
+          width: 75px;
+        }
+        .chat-list {
+          width: auto;
+        }
+
+        .list-group {
+          width: auto;
+        }
+
+        .context {
+          height: 100vh;
+          justify-content: center;
+          align-items: center;
+        }
       }
     </style>
     {% block extra_css %}{% endblock %}
   </head>
 
   <body>
-    <div class="app-layout">
+    <div class="app-layout" id="layout">
       <!-- 🔹 NAVBAR -->
       <header>
         <nav class="navbar navbar-dark">
           <div class="container-fluid">
-            <h1 class="navbar-brand" style="pointer-events: none">
-              FlatMate Finder
-            </h1>
+            <div
+              class="navbar-brand d-flex align-items-center gap-0.5"
+              style="pointer-events: none"
+            >
+              <img
+                src="{{ url_for('static', path='favicon.png') }}"
+                alt="FlatMate Finder Logo"
+                width="28"
+                height="28"
+              />
+              <span class="fw-semibold fs-5">FlatMate Finder</span>
+            </div>
 
             <ul class="navbar-nav flex-row ms-auto">
               <li class="nav-item dropdown">
@@ -205,43 +455,46 @@
       </header>
 
       <!-- 🔹 SIDEBAR -->
-      <aside class="sidebar">
-        <button
-          class="btn1 btn-outline-transparent"
-          onclick="window.location.href='/dash'"
-        >
-          Home
-        </button>
-        <br />
+      <aside class="sidebar-wrapper">
+        <div class="sidebar">
+          <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 
-        <button
-          class="btn1 btn-outline-transparent"
-          onclick="window.location.href='/dash/flatpost/createpost'"
-        >
-          Create Post
-        </button>
-        <br />
-        <button
-          class="btn1 btn-outline-transparent"
-          onclick="window.location.href='/dash/myposts'"
-        >
-          My Posts
-        </button>
+          <button class="btn1" onclick="window.location.href ='/dash'">
+            <span class="icon">🏠</span>
+            <span>Home</span>
+          </button>
 
-        <br />
-        <button
-          class="btn1 btn-outline-transparent"
-          onclick="window.location.href='/messages/chats'"
-        >
-          Messages
-        </button>
+          <button
+            class="btn1"
+            onclick="window.location.href
+            ='/dash/flatpost/createpost'"
+          >
+            <span class="icon">➕</span>
+            <span>Create Post</span>
+          </button>
+
+          <button class="btn1" onclick="window.location.href ='/dash/myposts'">
+            <span class="icon">📄</span>
+            <span>My Posts</span>
+          </button>
+
+          <button
+            class="btn1"
+            onclick="window.location.href
+            ='/messages/chats'"
+          >
+            <span class="icon">💬</span>
+            <span>Messages</span>
+          </button>
+        </div>
       </aside>
+      
+      <aside class="inbox-wrapper">
+        <div class="inbox">
+          <div class="inbox-toggle">💬</div>
 
-      <main class="main-content">
-        <div class="chat-layout">
-          {% if not receiver %}
           <div class="chat-list">
-            <h5 class="p-3" style="pointer-events: none">Inbox</h5>
+            <h5 class="p-3">Inbox</h5>
 
             <ul class="list-group list-group-flush w-100">
               {% for chat in chat_users %}
@@ -257,12 +510,41 @@
               {% endfor %}
             </ul>
           </div>
-          {% endif %} {% block chatcontent %}{% endblock %}
         </div>
+      </aside>
+      
+
+      <main class="main-content">
+        <div class="chat-layout">
+          {% if not receiver %}
+      <div class="context">
+        <h2>
+            <img
+              src="{{ url_for('static', path='favicon.png') }}"
+              alt="Logo"
+              width="55"
+              height="55"
+            />FlatMate Finder
+          </h2>
+      </div>
+      {% else %}
+          {% block chatcontent %}{% endblock %}
+        {% endif %}
       </main>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const sidebar = document.querySelector(".sidebar-wrapper");
+      sidebar.addEventListener("mouseenter", toggleSidebar);
+      sidebar.addEventListener("mouseleave", toggleSidebar);
+
+      function toggleSidebar() {
+        document.getElementById("layout").classList.toggle("sidebar-expanded");
+      }
+
+      
+    </script>
   </body>
 </html>

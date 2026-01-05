@@ -74,7 +74,7 @@ def open_chat(
     flat = db.query(Flat).filter(Flat.id == flat_id).first()
     if not flat:
         raise HTTPException(status_code=404, detail="Flat not found")
-    
+
     messages = (
         db.query(Message)
         .filter(
@@ -89,6 +89,25 @@ def open_chat(
         .order_by(Message.timestamp)
         .all()
     )
+    chats = (
+        db.query(Message)
+        .filter(
+            or_(
+                Message.sender_id == current_user.id,
+                Message.receiver_id == current_user.id,
+            )
+        )
+        .order_by(Message.timestamp.desc())
+        .all()
+    )
+
+    chat_map = {}
+    for msg in chats:
+        other_user = msg.receiver if msg.sender_id == current_user.id else msg.sender
+        key = (other_user.id, msg.flat_id)
+
+        if key not in chat_map:
+            chat_map[key] = {"user": other_user, "flat": msg.flat, "last_message": msg}
 
     return templates.TemplateResponse(
         "chatbox.html",
@@ -98,8 +117,9 @@ def open_chat(
             "messages": messages,
             "flat": flat,
             "flat_id": flat.id,
-            "current_user": current_user
-        }
+            "current_user": current_user,
+            "chat_users": list(chat_map.values())
+        },
     )
 
 @router.post("/send")
@@ -123,6 +143,5 @@ def send_message(
     response = RedirectResponse(
     url=f"/messages/m{receiver_id}?flat_id={flat_id}",
     status_code=303
-)
+    )
     return response
-
