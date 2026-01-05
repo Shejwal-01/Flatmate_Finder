@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -18,7 +18,7 @@
     <style>
       * {
         box-sizing: border-box;
-        }
+      }
       body {
         margin: 0;
         background-color: #bfdbe6;
@@ -39,10 +39,9 @@
       }
 
       header {
-        box-shadow: 2px 1px 5px 0px rgba(0,0,0,0.62);
+        box-shadow: 2px 1px 5px 0px rgba(0, 0, 0, 0.62);
         grid-column: 1 / -1;
         background-color: #1b2348;
-        
       }
       .navbar-brand img {
         position: relative;
@@ -83,7 +82,7 @@
 
       /* ===== SIDEBAR ===== */
       .sidebar-wrapper {
-        box-shadow: 2px 1px 5px 0px rgba(0,0,0,0.62);
+        box-shadow: 2px 1px 5px 0px rgba(0, 0, 0, 0.62);
         background-color: #1b2348;
         overflow: hidden;
         transition: width 0.5s ease;
@@ -150,7 +149,6 @@
         font-size: 18px;
         width: 24px;
         text-align: center;
-        
       }
 
       /* ===== MAIN ===== */
@@ -163,12 +161,12 @@
       @media (max-width: 768px) {
         .btn1 {
           gap: 2px;
-          padding-left: 10px;
+          padding-left: 11.5px;
           display: flex;
           align-items: left;
         }
         .btn1 span {
-          margin-right: 10px;
+          margin-right: 11px;
           font-size: 10px;
         }
         .app-layout {
@@ -184,6 +182,12 @@
   </head>
 
   <body>
+    {% if alert %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ alert }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
     <div class="app-layout" id="layout">
       <!-- NAVBAR -->
       <header>
@@ -219,9 +223,9 @@
 
                 <ul class="dropdown-menu dropdown-menu-end">
                   <li>
-                    <a class="dropdown-item" href="#"
-                      >{{ current_user.username }}</a
-                    >
+                    <a class="dropdown-item" href="#">
+                      {{ current_user.username }}
+                    </a>
                   </li>
                   <li>
                     <a class="dropdown-item" href="/dash/logout">Logout</a>
@@ -238,29 +242,27 @@
         <div class="sidebar">
           <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 
-          <button class="btn1" onclick="window.location.href ='/dash'">
+          <button class="btn1" onclick="window.location.href = '/dash'">
             <span class="icon">🏠</span>
             <span>Home</span>
           </button>
 
           <button
             class="btn1"
-            onclick="window.location.href
-            ='/dash/flatpost/createpost'"
+            onclick="window.location.href = '/dash/flatpost/createpost'"
           >
             <span class="icon">➕</span>
             <span>Create Post</span>
           </button>
 
-          <button class="btn1" onclick="window.location.href ='/dash/myposts'">
+          <button class="btn1" onclick="window.location.href = '/dash/myposts'">
             <span class="icon">📄</span>
             <span>My Posts</span>
           </button>
 
           <button
             class="btn1"
-            onclick="window.location.href
-            ='/messages/chats'"
+            onclick="window.location.href = '/messages/chats'"
           >
             <span class="icon">💬</span>
             <span>Messages</span>
@@ -276,12 +278,12 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      const sidebar = document.querySelector(".sidebar-wrapper");
-      sidebar.addEventListener("mouseenter", toggleSidebar);
-      sidebar.addEventListener("mouseleave", toggleSidebar);
+      const sidebar = document.querySelector('.sidebar-wrapper');
+      sidebar.addEventListener('mouseenter', toggleSidebar);
+      sidebar.addEventListener('mouseleave', toggleSidebar);
 
       function toggleSidebar() {
-        document.getElementById("layout").classList.toggle("sidebar-expanded");
+        document.getElementById('layout').classList.toggle('sidebar-expanded');
       }
     </script>
   </body>
