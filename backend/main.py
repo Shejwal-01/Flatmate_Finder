@@ -1,20 +1,34 @@
-from fastapi import FastAPI, Request, Depends
-from sqlalchemy.orm import Session
-from backend.database import get_db
-from backend.routes.auth import router as auth_router
-from backend.routes.auth import templates
+from fastapi import FastAPI, Request
+from fastapi.staticfiles import StaticFiles
+from contextlib import asynccontextmanager
+
+from backend.database import engine
+from backend.database import Base
+from backend.routes.auth import router as auth_router, templates
 from backend.routes.messages import router as msg_router
 from backend.routes.dashboard import router as dash_router
-from fastapi.staticfiles import StaticFiles
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+   
+    Base.metadata.create_all(bind=engine)
+    yield
 
 
 
+app = FastAPI(
+    title="FlatMate Finder API",
+    version="1.0.0",
+    lifespan=lifespan
+)
 
-app = FastAPI(title= "FlatMate Finder API", version="1.0.0")
+# Routers
 app.include_router(auth_router)
 app.include_router(msg_router)
 app.include_router(dash_router)
 
+# Static files
 app.mount(
     "/frontend/static",
     StaticFiles(directory="frontend/static"),
@@ -24,5 +38,6 @@ app.mount(
 @app.get("/")
 def show_site(request: Request):
     return templates.TemplateResponse(
-         "index.html",{"request": request}
+        "index.html",
+        {"request": request}
     )
