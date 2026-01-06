@@ -5,12 +5,11 @@
 ## 📚 Table of Contents
 
 - [✨ Key Features](#-key-features)
-- [🛠️ Tech Stack & Architecture](#-tech-stack--architecture)
+- [🛠️ Tech Stack & Architecture](#-tech-stack-&-architecture)
 - [📁 Project Structure](#-project-structure)
 - [🚀 Getting Started](#-getting-started)
 - [🔧 Usage](#-usage)
 - [🤝 Contributing](#-contributing)
-- [📝 License](#-license)
 
 ---
 
