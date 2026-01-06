@@ -6,13 +6,13 @@ from backend.database import get_db
 from fastapi.templating import Jinja2Templates
 from backend.dependencies.auth import get_current_user
 from backend.models.user import User
+from backend.models.message import Message
 from backend.schemas.flat_post import Flat_PostCreate, GenderEnum
 
 templates = Jinja2Templates(directory="frontend/templates")
 
 
 router = APIRouter(prefix = "/dash", tags = ["Dashboard"])
-
 
 
 @router.get("/")
@@ -30,7 +30,7 @@ def show_dashboard(request: Request,
         "dashboard.html",
         {"request": request, "current_user": current_user, "posts": posts}
     )
-    
+
 @router.get("/myposts")
 def show_myposts(request: Request, 
                    current_user: User = Depends(get_current_user),
@@ -46,10 +46,7 @@ def show_myposts(request: Request,
         "myposts.html",
         {"request": request, "current_user": current_user, "myposts": myposts}
     )   
-    
-    
-    
-    
+
 
 @router.get("/flatpost/createpost")
 def create_flatpost(
@@ -71,7 +68,7 @@ def create_flatpost(
         }
     )
 
-    
+
 @router.post("/flatpost/createpost")
 def create_flatpost(request: Request,
     current_user: User = Depends(get_current_user),
@@ -116,7 +113,6 @@ def create_flatpost(request: Request,
         url="/dash/flatpost/createpost?success=1",
         status_code=303
     )
-    
 
 
 @router.get("/logout")
@@ -170,8 +166,10 @@ def delete_flatpost(
     if not flat:
         raise HTTPException(status_code=404, detail="Post not found")
     else:
+        db.query(Message).filter(Message.flat_id == flat.id).delete()
         db.delete(flat)
         db.commit()
+
     
     return RedirectResponse(
     url="/dash/flatpost/deletepost?success=1",
