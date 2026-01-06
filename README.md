@@ -4,7 +4,6 @@
 
 ## 📚 Table of Contents
 
-- [⭐ Overview](#-overview)
 - [✨ Key Features](#-key-features)
 - [🛠️ Tech Stack & Architecture](#-tech-stack--architecture)
 - [📁 Project Structure](#-project-structure)
