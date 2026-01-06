@@ -1,17 +1,4 @@
 <h1 align="center"> FlatMate_Finder </h1>
-<p align="center"> The intelligent, high-performance API for effortless documentation generation. </p>
-
-<p align="center">
-  <img alt="Build Status" src="https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge">
-  <img alt="API Type" src="https://img.is/badge/Type-REST%20API-blue?style=for-the-badge">
-  <img alt="Backend" src="https://img.shields.io/badge/Backend-FastAPI-05998b?style=for-the-badge">
-  <img alt="Complexity" src="https://img.shields.io/badge/Complexity-Simple-4c1?style=for-the-badge">
-  <img alt="License" src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge">
-</p>
-<!-- 
-  **Note:** These are static placeholder badges. Replace them with your project's actual, live status badges.
-  You can generate your own at https://shields.io
--->
 
 ---
 
@@ -25,26 +12,6 @@
 - [🔧 Usage](#-usage)
 - [🤝 Contributing](#-contributing)
 - [📝 License](#-license)
-
----
-
-## ⭐ Overview
-
-FlatMate_Finder is a robust, high-performance API designed to streamline and automate one of the most tedious tasks in software development: generating professional, comprehensive documentation. This system transforms the complex process of code analysis and documentation generation into a simple API call, providing developers and organizations with instantaneous, high-quality results.
-
-### The Problem: The Documentation Bottleneck
-
-> Creating comprehensive, professional documentation (specifically README files) for software projects is notoriously time-consuming and often inconsistent. Developers are forced to spend critical development hours manually writing and formatting README files, frequently leaving out important installation details, usage instructions, or struggling to present their work professionally. Many open-source projects suffer from incomplete or poor documentation, which significantly hinders collaboration, accessibility, and potential contributor engagement.
-
-### The Solution: Automated Documentation via REST API
-
-FlatMate_Finder eliminates the documentation burden by providing a dedicated, automated backend service. This system is engineered as a **Simple REST API** built on **FastAPI**, designed for maximum speed and minimal latency.
-
-The core value proposition is simplicity: developers only need to interact with a well-defined API endpoint to trigger a documentation generation process. The API handles the complex logic—from authentication and user management to data modeling for output structure—delivering a refined, structured result ready for immediate use.
-
-### Architecture Overview
-
-FlatMate_Finder leverages a modern, decoupled architecture centered around a high-performance Python API. The entire system functions as a robust **REST API**, ensuring that all core documentation generation services are exposed via standard HTTP methods. The architecture relies on **FastAPI** to manage routing, dependencies, and provide the lightning-fast performance necessary for real-time documentation generation requests. This clean, API-driven approach allows for easy integration into existing development workflows, continuous integration/continuous deployment (CI/CD) pipelines, or custom web frontends.
 
 ---
 
@@ -312,8 +279,3 @@ All submissions must pass a code review before merging. Maintainers will provide
 ### Questions?
 
 Feel free to open an issue for any questions, suggestions, or concerns regarding contributions. We appreciate your interest and look forward to your involvement!
-
-<p align="center">Made with ❤️ by the FlatMate_Finder Team</p>
-<p align="center">
-  <a href="#">⬆️ Back to Top</a>
-</p>
