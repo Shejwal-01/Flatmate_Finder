@@ -16,11 +16,13 @@ async def lifespan(app: FastAPI):
     yield
 
 
-
 app = FastAPI(
     title="FlatMate Finder API",
     version="1.0.0",
-    lifespan=lifespan
+    lifespan=lifespan,
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None
 )
 
 # Routers
