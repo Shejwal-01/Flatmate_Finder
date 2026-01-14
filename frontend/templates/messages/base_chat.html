@@ -556,6 +556,17 @@
         document.getElementById("layout").classList.toggle("sidebar-expanded");
       }
 
+      const msgBox = document.getElementById("chat-messages");
+      function scrollToBottom(){
+
+      msgBox.scrollTo({
+      top: msgBox.scrollHeight,
+      behavior: "smooth"
+      });
+    }
+
+      window.addEventListener("load", scrollToBottom);
+
       
     </script>
   </body>
