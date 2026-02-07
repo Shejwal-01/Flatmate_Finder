@@ -1,6 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
+    <meta
+      name="google-site-verification"
+      content="lHgCSS9pMAt9Th9Lga9CW767do8y3avuZYcunVS0abg"
+    />
+    <meta
+      name="description"
+      content="FlatMate Finder is a website built by Shejwal Gadekar - Python Developer, using Python, FastAPI, MySQL"
+    />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
@@ -8,20 +16,31 @@
       type="image/png"
       href="{{ url_for('static', path='favicon.png') }}"
     />
-    <title>FlatMate Finder</title>
+    <title>FlatMate Finder | Shejwal Gadekar</title>
 
     <link
       rel="stylesheet"
       href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css"
     />
 
-    <link href="https://fonts.cdnfonts.com/css/poppins"
-    rel="stylesheet"
-    />
+    <link href="https://fonts.cdnfonts.com/css/poppins" rel="stylesheet" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Shejwal Gadekar",
+        "url": "https://flatmate-finder-660w.onrender.com/",
+        "jobTitle": "Python Developer",
+        "sameAs": [
+          "https://github.com/Shejwal-01",
+          "https://www.linkedin.com/in/shejwal-gadekar-797a4832a/"
+        ]
+      }
+    </script>
 
     <style>
-      *{
-        font-family: 'Poppins', sans-serif; 
+      * {
+        font-family: 'Poppins', sans-serif;
       }
       body {
         background-color: #bfdbe6;
@@ -73,7 +92,10 @@
 
       <form action="/auth/register" method="post">
         <div class="mb-3">
-          <label class="form-label">Full Name<span class="red">*</span></label>
+          <label class="form-label">
+            Full Name
+            <span class="red">*</span>
+          </label>
           <input
             type="text"
             name="name"
@@ -84,7 +106,10 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label">Username<span class="red">*</span></label>
+          <label class="form-label">
+            Username
+            <span class="red">*</span>
+          </label>
           <input
             type="text"
             id="username"
@@ -95,15 +120,18 @@
           />
         </div>
         <script>
-          const usernameInput = document.getElementById("username");
+          const usernameInput = document.getElementById('username');
 
-          usernameInput.addEventListener("input", function () {
+          usernameInput.addEventListener('input', function () {
             this.value = this.value.toLowerCase();
           });
         </script>
 
         <div class="mb-3">
-          <label class="form-label">Email<span class="red">*</span></label>
+          <label class="form-label">
+            Email
+            <span class="red">*</span>
+          </label>
           <input
             type="email"
             name="email"
@@ -114,7 +142,10 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label">Password<span class="red">*</span></label>
+          <label class="form-label">
+            Password
+            <span class="red">*</span>
+          </label>
           <input
             type="password"
             name="password"
@@ -126,9 +157,10 @@
 
         <!-- ✅ RADIO BUTTONS -->
         <div class="mb-3">
-          <label class="form-label d-block"
-            >Gender<span class="red">*</span></label
-          >
+          <label class="form-label d-block">
+            Gender
+            <span class="red">*</span>
+          </label>
           <div class="form-check form-check-inline">
             <input
               class="form-check-input"
@@ -163,7 +195,10 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label">City<span class="red">*</span></label>
+          <label class="form-label">
+            City
+            <span class="red">*</span>
+          </label>
           <input
             type="text"
             name="city"
